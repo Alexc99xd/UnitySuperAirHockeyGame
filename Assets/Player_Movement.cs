@@ -70,6 +70,13 @@ public class Player_Movement : MonoBehaviour
                 }
 
                 float PowerMult = time / FullChargeUp;
+
+                //base powerMult
+                if (PowerMult < 0.15f)//15 percent
+                {
+                    PowerMult = 0.15f;
+                }
+
                 Debug.Log(PowerMult);
                 moveDirCharge = direction.normalized * PowerMult * ChargeUpVelocity;
                 time = 0;
