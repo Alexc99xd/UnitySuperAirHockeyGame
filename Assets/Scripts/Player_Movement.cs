@@ -20,6 +20,9 @@ public class Player_Movement : MonoBehaviour
     private bool ChargeUpMovingTrigger = false;
     private float ChargeDamp = 0.80f;
 
+    public float currentSpeed;
+    public float acceleration;
+
     Vector2 moveDir;
     Vector2 moveDirCharge;
 
@@ -60,7 +63,10 @@ public class Player_Movement : MonoBehaviour
             {
                 //stop movement, charge up
                 time += Time.deltaTime;
-
+                arrow.SetActive(true);
+            } else
+            {
+                arrow.SetActive(false);
             }
 
 
@@ -125,6 +131,7 @@ public class Player_Movement : MonoBehaviour
 
     private void Move()
     {
+
         rb.velocity = moveDir * speed;
     }
 
