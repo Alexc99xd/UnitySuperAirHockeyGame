@@ -5,7 +5,7 @@ using UnityEngine;
 public class PuckPhysics : MonoBehaviour
 {
     public Rigidbody2D rb;
-    public float topSpeed = 20f;
+    public float topSpeed = 18f;
     private bool wallhit = false;
     private bool playerhit = false;
 
@@ -61,6 +61,7 @@ public class PuckPhysics : MonoBehaviour
         {
             rb.velocity = rb.velocity * goalBounce;
             //TODO: put a slightly random angle in
+            ChangeAngle(10);
         }
 
         if(collision.collider.tag == "Player")
@@ -72,5 +73,18 @@ public class PuckPhysics : MonoBehaviour
         //cheeck topspeed
         CheckTopSpeed();
 
+    }
+
+    private void ChangeAngle(float deviation)
+    {
+        rb.velocity = rotate(rb.velocity, Mathf.Deg2Rad*deviation);
+    }
+
+    private Vector2 rotate(Vector2 v, float delta)
+    {
+        return new Vector2(
+            v.x * Mathf.Cos(delta) - v.y * Mathf.Sin(delta),
+            v.x * Mathf.Sin(delta) + v.y * Mathf.Cos(delta)
+        );
     }
 }

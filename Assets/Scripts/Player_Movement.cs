@@ -11,14 +11,15 @@ public class Player_Movement : MonoBehaviour
     private float time = 0;
     private float FullChargeUp = 2f;
     private Vector2 direction;
-    private float ChargeUpVelocity = 30f;
+    private float ChargeUpVelocity = 34f;
 
     
     private float ChargeUpShotTimer = 0.5f;
     private float ChargeUpShotTimerTicker = 0;
     private bool ChargeUpMoving = false;
     private bool ChargeUpMovingTrigger = false;
-    private float ChargeDamp = 0.80f;
+    private float ChargeDamp = 0.875f;
+    private float MovingFriction = 0.97f;
 
     public float currentSpeed;
     public float acceleration;
@@ -37,7 +38,7 @@ public class Player_Movement : MonoBehaviour
     void Update()
     {
         arrow.transform.up = -direction;
-
+        currentSpeed = rb.velocity.magnitude;
         if (!ChargeUpMoving)
         {
             //joystick or WASD movement
@@ -114,6 +115,8 @@ public class Player_Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
+
+
         if (ChargeUpMoving)
         {
             if (ChargeUpMovingTrigger)
@@ -121,18 +124,36 @@ public class Player_Movement : MonoBehaviour
                 ChargeMove();
                 ChargeUpMovingTrigger = false;
             }
+
             rb.velocity = rb.velocity * ChargeDamp;
-        } else
+        } 
+        else
         {
+            //if moving, have some friction
+            rb.velocity *= MovingFriction;
             Move();
         }
+
+        if (mousedown)
+        {
+            if(rb.velocity.magnitude > speed / 3f)
+            {
+                rb.velocity = rb.velocity.normalized * speed / 3f;
+            }
+        }
+        
 
     }
 
     private void Move()
     {
 
-        rb.velocity = moveDir * speed;
+        //rb.velocity = moveDir * speed;
+        rb.velocity += moveDir * Time.fixedDeltaTime * 10;
+        if(rb.velocity.magnitude >= speed)
+        {
+            rb.velocity = rb.velocity.normalized * speed;
+        }
     }
 
     private void ChargeMove()
