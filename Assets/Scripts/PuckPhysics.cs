@@ -5,16 +5,16 @@ using UnityEngine;
 public class PuckPhysics : MonoBehaviour
 {
     public Rigidbody2D rb;
-    public float topSpeed = 18f;
+    public float topSpeed;
     private bool wallhit = false;
     private bool playerhit = false;
 
     private Vector2 wallNormal;
 
-    private float goalBounce = 1.5f;
+    private float goalBounce = 1.35f;
     private float playerBounce = 1.25f;
-    private float wallDamp = 0.9f;
-    private float friction = 0.999f;
+    private float wallDamp = 0.85f;
+    private float friction = 0.996f;
 
 
     // Start is called before the first frame update

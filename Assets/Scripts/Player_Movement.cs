@@ -11,14 +11,14 @@ public class Player_Movement : MonoBehaviour
     private float time = 0;
     private float FullChargeUp = 2f;
     private Vector2 direction;
-    private float ChargeUpVelocity = 34f;
+    private float ChargeUpVelocity = 39f;
 
     
     private float ChargeUpShotTimer = 0.5f;
     private float ChargeUpShotTimerTicker = 0;
     private bool ChargeUpMoving = false;
     private bool ChargeUpMovingTrigger = false;
-    private float ChargeDamp = 0.875f;
+    private float ChargeDamp = 0.825f;
     private float MovingFriction = 0.97f;
 
     public float currentSpeed;
