@@ -5,6 +5,7 @@ using UnityEngine;
 public class GoalCounter : MonoBehaviour
 {
     public int goals = 0;
+    public GameManagerRound manager;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +23,7 @@ public class GoalCounter : MonoBehaviour
         if(collision.collider.tag == "puck")
         {
             goals++;
+            manager.UpdateScore();
         }
     }
 

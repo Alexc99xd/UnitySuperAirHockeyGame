@@ -1,17 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using UnityEngine.UI;
 
 public class Player_Movement : MonoBehaviour
 {
+    public PhotonView photonView;
     // Start is called before the first frame update
     public float speed;
     public Rigidbody2D rb;
     private bool mousedown = false;
     private float time = 0;
-    private float FullChargeUp = 2f;
+    private float FullChargeUp = 1.8f;
     private Vector2 direction;
-    private float ChargeUpVelocity = 39f;
+    private float ChargeUpVelocity = 30f;
 
     
     private float ChargeUpShotTimer = 0.5f;
@@ -27,121 +30,154 @@ public class Player_Movement : MonoBehaviour
     Vector2 moveDir;
     Vector2 moveDirCharge;
 
+    public Text mTextOverHead;
+    public Transform mTransform;
+    public Transform mTextOverTransform;
+
     public GameObject arrow;
+
+    private void Awake()
+    {
+        mTransform = transform;
+        mTextOverTransform = mTextOverHead.transform;
+        mTextOverHead.color = Color.white;
+
+        if (photonView.IsMine)
+        {
+            mTextOverHead.text = PhotonNetwork.NickName;
+        }
+        else
+        {
+            mTextOverHead.text = photonView.Owner.NickName;
+        }
+    }
 
     void Start()
     {
         
     }
 
+    void LateUpdate()
+    {
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(mTransform.position);
+        screenPos.x += 50;
+        screenPos.y += 20; 
+        mTextOverTransform.position = screenPos;
+    }
+
     // Update is called once per frame
     void Update()
     {
-        arrow.transform.up = -direction;
-        currentSpeed = rb.velocity.magnitude;
-        if (!ChargeUpMoving)
+        if (photonView.IsMine)
         {
-            //joystick or WASD movement
-            float moveX = Input.GetAxisRaw("Horizontal");
-            float moveY = Input.GetAxisRaw("Vertical");
-
-            moveDir = new Vector2(moveX, moveY).normalized;
-
-            //get mouse down
-            if (Input.GetButton("Fire1") || mousedown) //left click
+            arrow.transform.up = -direction;
+            currentSpeed = rb.velocity.magnitude;
+            if (!ChargeUpMoving)
             {
-                Vector3 mousePosition = Input.mousePosition;
-                mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-                direction = new Vector2(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y);
-                mousedown = true;
+                //joystick or WASD movement
+                float moveX = Input.GetAxisRaw("Horizontal");
+                float moveY = Input.GetAxisRaw("Vertical");
+
+                moveDir = new Vector2(moveX, moveY).normalized;
+
+                //get mouse down
+                if (Input.GetButton("Fire1") || mousedown) //left click
+                {
+                    Vector3 mousePosition = Input.mousePosition;
+                    mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+                    direction = new Vector2(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y);
+                    mousedown = true;
+                }
+                else
+                {
+                    mousedown = false;
+                }
+
+                if (mousedown)
+                {
+                    //stop movement, charge up
+                    time += Time.deltaTime;
+                    arrow.SetActive(true);
+                }
+                else
+                {
+                    arrow.SetActive(false);
+                }
+
+
+                if (Input.GetButtonUp("Fire1"))
+                {
+                    //mouse button releases
+                    if (time > FullChargeUp)
+                    {
+                        time = FullChargeUp; //max power
+                    }
+
+                    float PowerMult = time / FullChargeUp;
+
+                    //base powerMult
+                    if (PowerMult < 0.25f)//15 percent
+                    {
+                        PowerMult = 0.25f;
+                    }
+
+                    //Debug.Log(PowerMult);
+                    moveDirCharge = direction.normalized * PowerMult * ChargeUpVelocity;
+                    time = 0;
+                    mousedown = false;
+                    ChargeUpMoving = true;
+                    ChargeUpMovingTrigger = true;
+
+                }
             }
             else
             {
-                mousedown = false;
-            }
-
-            if (mousedown)
-            {
-                //stop movement, charge up
-                time += Time.deltaTime;
-                arrow.SetActive(true);
-            } else
-            {
-                arrow.SetActive(false);
-            }
-
-
-            if (Input.GetButtonUp("Fire1"))
-            {
-                //mouse button releases
-                if (time > FullChargeUp)
+                if (ChargeUpShotTimerTicker < ChargeUpShotTimer)
                 {
-                    time = FullChargeUp; //max power
+                    ChargeUpShotTimerTicker += Time.deltaTime;
                 }
-
-                float PowerMult = time / FullChargeUp;
-
-                //base powerMult
-                if (PowerMult < 0.15f)//15 percent
+                else
                 {
-                    PowerMult = 0.15f;
+                    ChargeUpMoving = false;
+                    ChargeUpShotTimerTicker = 0;
                 }
-
-                //Debug.Log(PowerMult);
-                moveDirCharge = direction.normalized * PowerMult * ChargeUpVelocity;
-                time = 0;
-                mousedown = false;
-                ChargeUpMoving = true;
-                ChargeUpMovingTrigger = true;
+                //Player just ended their charge up, they cannot move for 1 second
 
             }
-        } 
-        else
-        {
-            if(ChargeUpShotTimerTicker < ChargeUpShotTimer)
-            {
-                ChargeUpShotTimerTicker += Time.deltaTime;
-            } else
-            {
-                ChargeUpMoving = false;
-                ChargeUpShotTimerTicker = 0;
-            }
-            //Player just ended their charge up, they cannot move for 1 second
-
         }
-        
 
     }
 
     private void FixedUpdate()
     {
 
-
-        if (ChargeUpMoving)
+        if (photonView.IsMine)
         {
-            if (ChargeUpMovingTrigger)
+            if (ChargeUpMoving)
             {
-                ChargeMove();
-                ChargeUpMovingTrigger = false;
+                if (ChargeUpMovingTrigger)
+                {
+                    ChargeMove();
+                    ChargeUpMovingTrigger = false;
+                }
+
+                rb.velocity = rb.velocity * ChargeDamp;
+            }
+            else
+            {
+                //if moving, have some friction
+                rb.velocity *= MovingFriction;
+                Move();
             }
 
-            rb.velocity = rb.velocity * ChargeDamp;
-        } 
-        else
-        {
-            //if moving, have some friction
-            rb.velocity *= MovingFriction;
-            Move();
-        }
-
-        if (mousedown)
-        {
-            if(rb.velocity.magnitude > speed / 3f)
+            if (mousedown)
             {
-                rb.velocity = rb.velocity.normalized * speed / 3f;
+                if (rb.velocity.magnitude > speed / 3f)
+                {
+                    rb.velocity = rb.velocity.normalized * speed / 3f;
+                }
             }
         }
-        
 
     }
 
@@ -160,4 +196,6 @@ public class Player_Movement : MonoBehaviour
     {
         rb.velocity = moveDirCharge;
     }
+
+    
 }

@@ -1,9 +1,11 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PuckPhysics : MonoBehaviour
 {
+    public PhotonView photonView;
     public Rigidbody2D rb;
     public float topSpeed;
     private bool wallhit = false;
@@ -31,10 +33,13 @@ public class PuckPhysics : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Debug.Log(rb.velocity.magnitude);
-        //Top speed on puck
-        rb.velocity = rb.velocity * friction;
-        CheckTopSpeed();
+        
+        
+            //Debug.Log(rb.velocity.magnitude);
+            //Top speed on puck
+            rb.velocity = rb.velocity * friction;
+            CheckTopSpeed();
+        
 
     }
 
