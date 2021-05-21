@@ -33,12 +33,13 @@ public class PuckPhysics : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
         
-        
-            //Debug.Log(rb.velocity.magnitude);
-            //Top speed on puck
-            rb.velocity = rb.velocity * friction;
-            CheckTopSpeed();
+        //Debug.Log(rb.velocity.magnitude);
+        //Top speed on puck
+        rb.velocity = rb.velocity * friction;
+        CheckTopSpeed();
         
 
     }

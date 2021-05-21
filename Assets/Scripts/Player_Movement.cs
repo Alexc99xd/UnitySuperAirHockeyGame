@@ -61,7 +61,7 @@ public class Player_Movement : MonoBehaviour
     {
         Vector3 screenPos = Camera.main.WorldToScreenPoint(mTransform.position);
         screenPos.x += 50;
-        screenPos.y += 20; 
+        screenPos.y += 40; 
         mTextOverTransform.position = screenPos;
     }
 

@@ -43,8 +43,8 @@ public class GameManagerRound : MonoBehaviour
 
     public void UpdateScore()
     {
-        text_team1.text = "Team 1: " + goal_T1.goals;
-        text_team2.text = "Team 2: " + goal_T2.goals;
+        text_team1.text = "Team 1: " + goal_T2.goals;
+        text_team2.text = "Team 2: " + goal_T1.goals;
     }
 
     public void SpawnPlayerT1()
