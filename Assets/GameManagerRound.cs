@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class GameManagerRound : MonoBehaviour
 {
-
+    public PhotonView photonView;
     public GameObject PlayerPrefab;
     public GameObject GameCanvas;
 
@@ -43,19 +43,25 @@ public class GameManagerRound : MonoBehaviour
 
     public void UpdateScore()
     {
-        text_team1.text = "Team 1: " + goal_T2.goals;
-        text_team2.text = "Team 2: " + goal_T1.goals;
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            text_team1.text = "Team 1: " + goal_T2.goals;
+            text_team2.text = "Team 2: " + goal_T1.goals;
+        }
+
     }
 
     public void SpawnPlayerT1()
     {
-        PhotonNetwork.Instantiate(PlayerPrefab.name, new Vector2(T1_spawn_A.transform.position.x, T1_spawn_A.transform.position.y), Quaternion.identity, 0);
+        GameObject prefab = PhotonNetwork.Instantiate(PlayerPrefab.name, new Vector2(T1_spawn_A.transform.position.x, T1_spawn_A.transform.position.y), Quaternion.identity, 0);
+        prefab.GetComponent<SpriteRenderer>().color = Color.cyan;
         GameCanvas.SetActive(false);
     }
 
     public void SpawnPlayerT2()
     {
-        PhotonNetwork.Instantiate(PlayerPrefab.name, new Vector2(T2_spawn_A.transform.position.x, T2_spawn_A.transform.position.y), Quaternion.identity, 0);
+        GameObject prefab = PhotonNetwork.Instantiate(PlayerPrefab.name, new Vector2(T2_spawn_A.transform.position.x, T2_spawn_A.transform.position.y), Quaternion.identity, 0);
+        prefab.GetComponent<SpriteRenderer>().color = Color.magenta;
         GameCanvas.SetActive(false);
     }
 }

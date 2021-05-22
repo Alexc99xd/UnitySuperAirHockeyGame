@@ -12,12 +12,12 @@ public class Player_Movement : MonoBehaviour
     public Rigidbody2D rb;
     private bool mousedown = false;
     private float time = 0;
-    private float FullChargeUp = 1.8f;
+    private float FullChargeUp = 2f;
     private Vector2 direction;
-    private float ChargeUpVelocity = 30f;
+    private float ChargeUpVelocity = 25f;
 
     
-    private float ChargeUpShotTimer = 0.5f;
+    private float ChargeUpShotTimer = 0.1f;
     private float ChargeUpShotTimerTicker = 0;
     private bool ChargeUpMoving = false;
     private bool ChargeUpMovingTrigger = false;
@@ -35,6 +35,9 @@ public class Player_Movement : MonoBehaviour
     public Transform mTextOverTransform;
 
     public GameObject arrow;
+    public GameObject power1;
+    public GameObject power2;
+    public GameObject powerGage;
 
     private void Awake()
     {
@@ -54,7 +57,9 @@ public class Player_Movement : MonoBehaviour
 
     void Start()
     {
-        
+        power1.SetActive(false);
+        power2.SetActive(false);
+        powerGage.SetActive(false);
     }
 
     void LateUpdate()
@@ -72,8 +77,8 @@ public class Player_Movement : MonoBehaviour
         {
             arrow.transform.up = -direction;
             currentSpeed = rb.velocity.magnitude;
-            if (!ChargeUpMoving)
-            {
+            //if (!ChargeUpMoving)
+            //{
                 //joystick or WASD movement
                 float moveX = Input.GetAxisRaw("Horizontal");
                 float moveY = Input.GetAxisRaw("Vertical");
@@ -91,17 +96,30 @@ public class Player_Movement : MonoBehaviour
                 else
                 {
                     mousedown = false;
+                    
                 }
 
                 if (mousedown)
                 {
+                    powerGage.SetActive(true);
                     //stop movement, charge up
                     time += Time.deltaTime;
                     arrow.SetActive(true);
+                    if(time >= 1f)
+                    {
+                        power2.SetActive(true);
+                    } else if (time >= 0.4f)
+                    {
+                        power1.SetActive(true);
+                    }
+
                 }
                 else
                 {
                     arrow.SetActive(false);
+                    powerGage.SetActive(false);
+                    power1.SetActive(false);
+                    power2.SetActive(false);
                 }
 
 
@@ -110,39 +128,63 @@ public class Player_Movement : MonoBehaviour
                     //mouse button releases
                     if (time > FullChargeUp)
                     {
-                        time = FullChargeUp; //max power
+                        time = FullChargeUp + 1; //max power
                     }
 
                     float PowerMult = time / FullChargeUp;
 
                     //base powerMult
-                    if (PowerMult < 0.25f)//15 percent
+                    if (time <= 0.4f)//50 percent
                     {
-                        PowerMult = 0.25f;
+                        PowerMult = 0f;
+                        moveDirCharge = direction.normalized * PowerMult * ChargeUpVelocity;
+                        time = 0;
+                        mousedown = false;
+                    }
+                    else if (time < 1f)
+                    {
+                        PowerMult = 0.5f;
+                        moveDirCharge = direction.normalized * PowerMult * ChargeUpVelocity;
+                        time = 0;
+                        mousedown = false;
+                        ChargeUpMoving = true;
+                        ChargeUpMovingTrigger = true;
+                    } 
+                    else
+                    {
+                        PowerMult = 1f;
+                        moveDirCharge = direction.normalized * PowerMult * ChargeUpVelocity;
+                        time = 0;
+                        mousedown = false;
+                        ChargeUpMoving = true;
+                        ChargeUpMovingTrigger = true;
                     }
 
-                    //Debug.Log(PowerMult);
-                    moveDirCharge = direction.normalized * PowerMult * ChargeUpVelocity;
-                    time = 0;
-                    mousedown = false;
-                    ChargeUpMoving = true;
-                    ChargeUpMovingTrigger = true;
-
                 }
+            //}
+            //else
+            //{
+            //    if (ChargeUpShotTimerTicker < ChargeUpShotTimer)
+            //    {
+            //        ChargeUpShotTimerTicker += Time.deltaTime;
+            //    }
+            //    else
+            //    {
+            //        ChargeUpMoving = false;
+            //        ChargeUpShotTimerTicker = 0;
+            //    }
+
+            //}
+
+
+            if (ChargeUpShotTimerTicker < ChargeUpShotTimer)
+            {
+                ChargeUpShotTimerTicker += Time.deltaTime;
             }
             else
             {
-                if (ChargeUpShotTimerTicker < ChargeUpShotTimer)
-                {
-                    ChargeUpShotTimerTicker += Time.deltaTime;
-                }
-                else
-                {
-                    ChargeUpMoving = false;
-                    ChargeUpShotTimerTicker = 0;
-                }
-                //Player just ended their charge up, they cannot move for 1 second
-
+                ChargeUpMoving = false;
+                ChargeUpShotTimerTicker = 0;
             }
         }
 
@@ -172,9 +214,9 @@ public class Player_Movement : MonoBehaviour
 
             if (mousedown)
             {
-                if (rb.velocity.magnitude > speed / 3f)
+                if (rb.velocity.magnitude > speed / 3.5f)
                 {
-                    rb.velocity = rb.velocity.normalized * speed / 3f;
+                    rb.velocity = rb.velocity.normalized * speed / 3.5f;
                 }
             }
         }
@@ -185,10 +227,10 @@ public class Player_Movement : MonoBehaviour
     {
 
         //rb.velocity = moveDir * speed;
-        rb.velocity += moveDir * Time.fixedDeltaTime * 10;
+        rb.velocity += moveDir * Time.fixedDeltaTime * 20;
         if(rb.velocity.magnitude >= speed)
         {
-            rb.velocity = rb.velocity.normalized * speed;
+             rb.velocity = rb.velocity.normalized * speed;
         }
     }
 

@@ -1306,6 +1306,7 @@ GameObject:
   m_Component:
   - component: {fileID: 403688231}
   - component: {fileID: 403688230}
+  - component: {fileID: 403688232}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1325,6 +1326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c45e3c39bc99ca46b729a9c82012a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  photonView: {fileID: 403688232}
   PlayerPrefab: {fileID: 7071935145513927181, guid: b2dd68c9d50c9b44d84bcdb96234da84, type: 3}
   GameCanvas: {fileID: 172256439}
   goal_T1: {fileID: 1883199089}
@@ -1349,6 +1351,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &403688232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403688229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 2
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &554545975
 GameObject:
   m_ObjectHideFlags: 0
@@ -1607,8 +1631,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278226943
-  m_fontColor: {r: 1, g: 0.55906224, b: 0, a: 1}
+    rgba: 4290904319
+  m_fontColor: {r: 1, g: 0, b: 0.76246595, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2431,7 +2455,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   photonView: {fileID: 1612652874}
   rb: {fileID: 1612652869}
-  topSpeed: 15
+  topSpeed: 12
 --- !u!114 &1612652873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3275,17 +3299,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7071935145513927178, guid: b2dd68c9d50c9b44d84bcdb96234da84, type: 3}
+      propertyPath: speed
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 7071935145513927181, guid: b2dd68c9d50c9b44d84bcdb96234da84, type: 3}
       propertyPath: m_Name
       value: Player1
       objectReference: {fileID: 0}
     - target: {fileID: 7071935145513927181, guid: b2dd68c9d50c9b44d84bcdb96234da84, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7071935145941026277, guid: b2dd68c9d50c9b44d84bcdb96234da84, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7071935145941026277, guid: b2dd68c9d50c9b44d84bcdb96234da84, type: 3}
       propertyPath: m_DynamicOccludee
