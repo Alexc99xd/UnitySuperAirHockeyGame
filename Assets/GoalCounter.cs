@@ -1,11 +1,14 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GoalCounter : MonoBehaviour
 {
+    public int team_that_gets_the_point;
     public int goals = 0;
     public GameManagerRound manager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +26,7 @@ public class GoalCounter : MonoBehaviour
         if(collision.collider.tag == "puck")
         {
             goals++;
-            manager.UpdateScore();
+            manager.UpdateScore(team_that_gets_the_point);
         }
     }
 

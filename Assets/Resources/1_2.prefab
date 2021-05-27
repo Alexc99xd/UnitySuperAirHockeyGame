@@ -373,7 +373,7 @@ GameObject:
   - component: {fileID: 7142184626013664700}
   - component: {fileID: 7117569689460617756}
   m_Layer: 2
-  m_Name: Player1
+  m_Name: 1_2
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -499,7 +499,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   photonView: {fileID: 7142184626013664700}
-  speed: 12
+  speed: 10
   rb: {fileID: 7071935145513927183}
   currentSpeed: 0
   acceleration: 0
@@ -510,8 +510,8 @@ MonoBehaviour:
   power1: {fileID: 1777402344002020581}
   power2: {fileID: 5092742284499153894}
   powerGage: {fileID: 3196137623927075207}
-  team_number: 0
-  player_number: 0
+  team_number: 1
+  player_number: 2
 --- !u!114 &7142184626013664700
 MonoBehaviour:
   m_ObjectHideFlags: 0

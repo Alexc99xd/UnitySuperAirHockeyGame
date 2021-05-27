@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PuckPhysics : MonoBehaviour
 {
+    public Stat_Manager stat_manager;
     public PhotonView photonView;
     public Rigidbody2D rb;
     public float topSpeed;
@@ -18,17 +19,48 @@ public class PuckPhysics : MonoBehaviour
     private float wallDamp = 0.85f;
     private float friction = 0.996f;
 
+    private int last_touched_by_team;
+    private int last_touched_by_player;
+
+    private bool MayHitGoal;
+    private int mayhitgoal_number = 0;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        stat_manager = GameObject.Find("StatsManager").GetComponent<Stat_Manager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-       //TODO: possible spricting friction
+        //TODO: possible spricting friction
+
+        //do raycast to see if it will hit any goal
+        //Vector2 endpoint = new Vector2(transform.position.x, transform.position.y) + rb.velocity * 1000;
+        RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), rb.velocity);
+        //Debug.DrawLine(new Vector2(transform.position.x, transform.position.y), endpoint);
+        //Debug.Log(hit.collider.tag);
+        if (hit.collider != null)
+        {
+            if (hit.collider.tag == "goal1")
+            {
+                mayhitgoal_number = 1;
+                MayHitGoal = true;
+            }
+            else if (hit.collider.tag == "goal2")
+            {
+                mayhitgoal_number = 2;
+                MayHitGoal = true;
+            }
+            else
+            {
+                MayHitGoal = false;
+            }
+        }
+
+        //Debug.Log(MayHitGoal);
     }
 
     private void FixedUpdate()
@@ -63,21 +95,123 @@ public class PuckPhysics : MonoBehaviour
             wallNormal = collision.GetContact(0).normal;
         }
 
-        if (collision.collider.tag == "goal")
+        if (collision.collider.tag == "goal1")
         {
             rb.velocity = rb.velocity * goalBounce;
             //TODO: put a slightly random angle in
             ChangeAngle(10);
+
+            if(last_touched_by_team == 1)
+            {
+                //count own goal to player
+                if(last_touched_by_player!= 0)
+                {
+                    stat_manager.team1[last_touched_by_player - 1].own_goals++;
+                }
+            } else
+            {
+                //count goal to player
+                if (last_touched_by_player != 0)
+                {
+                    stat_manager.team1[last_touched_by_player - 1].goals++;
+                }
+            }
+
         }
 
-        if(collision.collider.tag == "Player")
+        if (collision.collider.tag == "goal2")
+        {
+            rb.velocity = rb.velocity * goalBounce;
+            //TODO: put a slightly random angle in
+            ChangeAngle(10);
+
+            if (last_touched_by_team == 2)
+            {
+                //count own goal to player
+                if (last_touched_by_player != 0)
+                {
+                    stat_manager.team2[last_touched_by_player - 1].own_goals++;
+                }
+            }
+            else
+            {
+                //count goal to player
+                if (last_touched_by_player != 0)
+                {
+                    stat_manager.team2[last_touched_by_player - 1].goals++;
+                }
+            }
+
+        }
+
+        if (collision.collider.tag == "Player")
         {
             rb.velocity = rb.velocity * playerBounce;
             playerhit = true;
+            Player_Movement a = collision.gameObject.GetComponent<Player_Movement>();
+            last_touched_by_team = a.team_number;
+            last_touched_by_player = a.player_number;
+
+            if (MayHitGoal)
+            {
+                if(mayhitgoal_number == last_touched_by_player)
+                {
+                    //get a save for that player if changed direction enough
+
+                    if (last_touched_by_team == 1)
+                    {
+                        RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), rb.velocity);
+                        if (hit.collider != null)
+                        {
+                            if (hit.collider.tag == "goal1")
+                            {
+                                //no
+                            }
+                            else
+                            {
+                                stat_manager.team1[last_touched_by_player - 1].saves++;
+                                Debug.Log("SAVE!");
+                            }
+                        }
+                        //stat_manager.team1[last_touched_by_player - 1].saves++;
+
+                    } else
+                    {
+                        RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), rb.velocity);
+                        if (hit.collider != null)
+                        {
+                            if (hit.collider.tag == "goal2")
+                            {
+                                //no
+                            }
+                            else
+                            {
+                                stat_manager.team2[last_touched_by_player - 1].saves++;
+                                Debug.Log("SAVE!");
+                            }
+                        }
+                        //stat_manager.team2[last_touched_by_player - 1].saves++;
+
+                    }
+                    
+                }
+            }
+
+            //touches
+            if (last_touched_by_team == 1)
+            {
+                stat_manager.team1[last_touched_by_player - 1].touches++;
+            }
+            else
+            {
+                stat_manager.team2[last_touched_by_player - 1].touches++;
+            }
         }
 
         //cheeck topspeed
         CheckTopSpeed();
+
+
 
     }
 

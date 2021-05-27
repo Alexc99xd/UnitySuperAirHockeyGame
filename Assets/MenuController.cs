@@ -28,6 +28,11 @@ public class MenuController : MonoBehaviourPunCallbacks
         Username.SetActive(true);
     }
 
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinLobby(TypedLobby.Default);
@@ -66,7 +71,15 @@ public class MenuController : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        PhotonNetwork.LoadLevel("TestBoard");
+        
+        if(CreateGameInput.text == "H")
+        {
+            PhotonNetwork.LoadLevel("Hourglass");
+        } 
+        else
+        {
+            PhotonNetwork.LoadLevel("TestBoard");
+        }
     }
 
 }
