@@ -498,6 +498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 196af03e53a667141acffb8cda9f88d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name_player: 
   photonView: {fileID: 7142184626013664700}
   speed: 10
   rb: {fileID: 7071935145513927183}

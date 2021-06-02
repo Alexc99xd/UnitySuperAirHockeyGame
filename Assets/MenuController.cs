@@ -59,23 +59,31 @@ public class MenuController : MonoBehaviourPunCallbacks
 
     public void CreateGame()
     {
-        PhotonNetwork.CreateRoom(CreateGameInput.text, new RoomOptions() { MaxPlayers = 4 }, null);
+        PhotonNetwork.CreateRoom(CreateGameInput.text, new RoomOptions() { MaxPlayers = 11 }, null);
     }
 
     public void JoinGame()
     {
         RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = 4;
+        roomOptions.MaxPlayers = 11;
         PhotonNetwork.JoinOrCreateRoom(JoinGameInput.text, roomOptions, TypedLobby.Default);
     }
 
     public override void OnJoinedRoom()
     {
         
-        if(CreateGameInput.text == "H")
+        if(CreateGameInput.text == "H" || JoinGameInput.text=="H")
         {
             PhotonNetwork.LoadLevel("Hourglass");
         } 
+        else if(CreateGameInput.text == "P" || JoinGameInput.text == "P")
+        {
+            PhotonNetwork.LoadLevel("Plinko");
+        }
+        else if (CreateGameInput.text == "F" || JoinGameInput.text == "F")
+        {
+            PhotonNetwork.LoadLevel("Fort");
+        }
         else
         {
             PhotonNetwork.LoadLevel("TestBoard");

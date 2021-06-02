@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class Player_Movement : MonoBehaviour
 {
+    public string name_player;
     public PhotonView photonView;
     // Start is called before the first frame update
     public float speed;
@@ -55,10 +56,14 @@ public class Player_Movement : MonoBehaviour
         if (photonView.IsMine)
         {
             mTextOverHead.text = PhotonNetwork.NickName;
+            name_player = PhotonNetwork.NickName;
+            StringsManager.ChangeString(team_number, player_number, name_player);
         }
         else
         {
             mTextOverHead.text = photonView.Owner.NickName;
+            name_player = photonView.Owner.NickName;
+            StringsManager.ChangeString(team_number, player_number, name_player);
         }
     }
 
@@ -216,9 +221,9 @@ public class Player_Movement : MonoBehaviour
 
             if (mousedown)
             {
-                if (rb.velocity.magnitude > speed / 3.5f)
+                if (rb.velocity.magnitude > speed / 3f)
                 {
-                    rb.velocity = rb.velocity.normalized * speed / 3.5f;
+                    rb.velocity = rb.velocity.normalized * speed / 3f;
                 }
             }
         }
@@ -229,7 +234,7 @@ public class Player_Movement : MonoBehaviour
     {
 
         //rb.velocity = moveDir * speed;
-        rb.velocity += moveDir * Time.fixedDeltaTime * 20;
+        rb.velocity += moveDir * Time.fixedDeltaTime * 12.5f; //accel
         if(rb.velocity.magnitude >= speed)
         {
              rb.velocity = rb.velocity.normalized * speed;

@@ -439,7 +439,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: 4adeaf2d2b1c7417e89f026626d8264f, type: 3}
-  m_Color: {r: 0, g: 1, b: 0.25349808, a: 1}
+  m_Color: {r: 1, g: 0, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -498,6 +498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 196af03e53a667141acffb8cda9f88d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name_player: 
   photonView: {fileID: 7142184626013664700}
   speed: 10
   rb: {fileID: 7071935145513927183}

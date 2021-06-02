@@ -113,7 +113,7 @@ public class PuckPhysics : MonoBehaviour
                 //count goal to player
                 if (last_touched_by_player != 0)
                 {
-                    stat_manager.team1[last_touched_by_player - 1].goals++;
+                    stat_manager.team2[last_touched_by_player - 1].goals++;
                 }
             }
 
@@ -138,7 +138,7 @@ public class PuckPhysics : MonoBehaviour
                 //count goal to player
                 if (last_touched_by_player != 0)
                 {
-                    stat_manager.team2[last_touched_by_player - 1].goals++;
+                    stat_manager.team1[last_touched_by_player - 1].goals++;
                 }
             }
 
@@ -154,7 +154,7 @@ public class PuckPhysics : MonoBehaviour
 
             if (MayHitGoal)
             {
-                if(mayhitgoal_number == last_touched_by_player)
+                if(mayhitgoal_number == last_touched_by_team)
                 {
                     //get a save for that player if changed direction enough
 
@@ -198,14 +198,48 @@ public class PuckPhysics : MonoBehaviour
             }
 
             //touches
+            //shots and shots on goal
             if (last_touched_by_team == 1)
             {
                 stat_manager.team1[last_touched_by_player - 1].touches++;
+                Debug.Log(collision.rigidbody.velocity.magnitude);
+                if(collision.rigidbody.velocity.magnitude > 3.5)
+                {
+                    stat_manager.team1[last_touched_by_player - 1].shots++;
+                    RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), rb.velocity);
+                    if (hit.collider != null)
+                    {
+                        if (hit.collider.tag == "goal2")
+                        {
+                            stat_manager.team1[last_touched_by_player - 1].shots_on_goal++;
+                        }
+
+                    }
+                }
+                
+
             }
             else
             {
                 stat_manager.team2[last_touched_by_player - 1].touches++;
+                if (collision.rigidbody.velocity.magnitude > 3.5) 
+                {
+                    stat_manager.team2[last_touched_by_player - 1].shots++;
+                    RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), rb.velocity);
+                    if (hit.collider != null)
+                    {
+                        if (hit.collider.tag == "goal1")
+                        {
+                            stat_manager.team2[last_touched_by_player - 1].shots_on_goal++;
+                        }
+
+                    }
+                }
             }
+
+            
+
+            
         }
 
         //cheeck topspeed

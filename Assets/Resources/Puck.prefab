@@ -139,7 +139,7 @@ MonoBehaviour:
   stat_manager: {fileID: 0}
   photonView: {fileID: 4920542173908791245}
   rb: {fileID: 4920542173908791234}
-  topSpeed: 11
+  topSpeed: 10
 --- !u!114 &4920542173908791245
 MonoBehaviour:
   m_ObjectHideFlags: 0

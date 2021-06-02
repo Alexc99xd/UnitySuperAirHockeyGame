@@ -373,7 +373,7 @@ GameObject:
   - component: {fileID: 7142184626013664700}
   - component: {fileID: 7117569689460617756}
   m_Layer: 2
-  m_Name: 2_1
+  m_Name: 2_4
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -512,7 +512,7 @@ MonoBehaviour:
   power2: {fileID: 5092742284499153894}
   powerGage: {fileID: 3196137623927075207}
   team_number: 2
-  player_number: 1
+  player_number: 4
 --- !u!114 &7142184626013664700
 MonoBehaviour:
   m_ObjectHideFlags: 0

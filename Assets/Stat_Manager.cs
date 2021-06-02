@@ -37,7 +37,9 @@ public class Stat_Manager : MonoBehaviour
         team1.Add(new Stat());
         team1.Add(new Stat());
         team1.Add(new Stat());
+        team1.Add(new Stat());
 
+        team2.Add(new Stat());
         team2.Add(new Stat());
         team2.Add(new Stat());
         team2.Add(new Stat());
