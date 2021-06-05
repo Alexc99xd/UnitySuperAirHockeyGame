@@ -297,8 +297,8 @@ public class GameManagerRound : MonoBehaviour
         float init = 1;
         if(total_goals != 0)
         {
-            init += Mathf.Pow( (goals+0.1f) / (total_goals + 0.0f), 1.10f); //goals mult
-            init -= Mathf.Pow((own + 0.1f) / (total_goals + 0.0f), 1.25f); //own goals multiplier
+            init += Mathf.Pow( (goals+0.1f) / (total_goals + 0.2f), 1.10f); //goals mult
+            init -= Mathf.Pow( (own + 0.1f) / (total_goals + 0.2f), 1.25f); //own goals multiplier
         } 
         else //sitting duck!
         {
@@ -307,11 +307,30 @@ public class GameManagerRound : MonoBehaviour
         if (activity != 0)
         {
             if(saves != 0)
-                init += Mathf.Pow( (saves+0.1f) / (activity + 0.0f), 1.05f); //saves mult (could be neg)
+                init += Mathf.Pow( (saves+1f) / (activity + 1.2f), 1.05f); //saves mult (could be neg)
             if(p_m_saves_weight != 0)
-                init += Mathf.Pow( (p_m_saves_weight+0.1f) / (activity + 0.0f), 1.10f); //activity mult
+            {
+                if(p_m_saves_weight < 0)
+                {
+                    init -= Mathf.Pow((Mathf.Abs(p_m_saves_weight) + 1f) / (activity + 1.2f), 1.10f); //activity mult
+                } else
+                {
+                    init += Mathf.Pow((Mathf.Abs(p_m_saves_weight) + 1f) / (activity + 1.2f), 1.10f); //activity mult
+                }
+                
+            }
+                
             if(pm_cooler != 0)
-                init += Mathf.Pow( (pm_cooler+0.1f) / (activity + 0.0f), 1.1f); //shots and p/m
+            {
+                if(pm_cooler < 0)
+                {
+                    init -= Mathf.Pow((Mathf.Abs(pm_cooler)) / (activity + 1.2f), 1.1f); //shots and p/m
+                } else
+                {
+                    init += Mathf.Pow((Mathf.Abs(pm_cooler)) / (activity + 1.2f), 1.1f); //shots and p/m
+                }
+            }
+                
             //init += (float)(-1.5*Mathf.Pow(2.7f,-touch_efficiency)+1)*Mathf.Log10(touches/2) + touches*(1.0f/15);
         } 
         else
@@ -320,7 +339,7 @@ public class GameManagerRound : MonoBehaviour
         }
 
 
-        return init/1.5f; //xd
+        return init; //xd
 
 
 

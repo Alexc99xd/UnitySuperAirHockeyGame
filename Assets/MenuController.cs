@@ -84,6 +84,14 @@ public class MenuController : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.LoadLevel("Fort");
         }
+        else if (CreateGameInput.text == "C" || JoinGameInput.text == "C")
+        {
+            PhotonNetwork.LoadLevel("Cassette");
+        }
+        else if (CreateGameInput.text == "T" || JoinGameInput.text == "T")
+        {
+            PhotonNetwork.LoadLevel("Table");
+        }
         else
         {
             PhotonNetwork.LoadLevel("TestBoard");

@@ -15,9 +15,15 @@ EditorBuildSettings:
     path: Assets/Scenes/Boards/Hourglass.unity
     guid: ad2c4598972a2f346a4d62d1f9857a76
   - enabled: 1
-    path: Assets/Scenes/Boards/Fort.unity
+    path: Assets/Scenes/Boards/Cassette.unity
     guid: 0e4b4ed9691ef5e4085d0416fcdf1afe
   - enabled: 1
     path: Assets/Scenes/Boards/Plinko.unity
     guid: 56f3798374932654d9eccc859a34ddac
+  - enabled: 1
+    path: Assets/Scenes/Boards/Fort.unity
+    guid: 686332fcf19943545ac37382d7633dfb
+  - enabled: 1
+    path: Assets/Scenes/Boards/Table.unity
+    guid: 84e0a0cc6a0340a44ac57c4e3bf86e9a
   m_configObjects: {}
