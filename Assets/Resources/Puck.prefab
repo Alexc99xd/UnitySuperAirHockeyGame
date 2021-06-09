@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 4920542173908791236}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.03, y: -1.06, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -139,7 +139,7 @@ MonoBehaviour:
   stat_manager: {fileID: 0}
   photonView: {fileID: 4920542173908791245}
   rb: {fileID: 4920542173908791234}
-  topSpeed: 10
+  topSpeed: 8
 --- !u!114 &4920542173908791245
 MonoBehaviour:
   m_ObjectHideFlags: 0
